@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soft Skills MCQ Arena — BEU 7th Sem</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080b14;
+  --surface: #0e1422;
+  --card: #131929;
+  --card2: #192133;
+  --border: #1e2d4a;
+  --border2: #263650;
+  --accent: #3b82f6;
+  --accent2: #06d6a0;
+  --accent3: #f59e0b;
+  --accent4: #f43f5e;
+  --accent5: #a855f7;
+  --text: #e2e8f0;
+  --muted: #64748b;
+  --muted2: #94a3b8;
+  --correct: #06d6a0;
+  --wrong: #f43f5e;
+  --glow-blue: 0 0 40px rgba(59,130,246,0.2);
+  --glow-green: 0 0 40px rgba(6,214,160,0.2);
+  --glow-gold: 0 0 40px rgba(245,158,11,0.2);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Animated BG */
+.bg-orbs {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+}
+.orb {
+  position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.12;
+  animation: orbFloat 8s ease-in-out infinite;
+}
+.orb1 { width: 500px; height: 500px; background: #3b82f6; top: -150px; left: -150px; animation-delay: 0s; }
+.orb2 { width: 400px; height: 400px; background: #06d6a0; bottom: -100px; right: -100px; animation-delay: 3s; }
+.orb3 { width: 300px; height: 300px; background: #a855f7; top: 40%; left: 50%; animation-delay: 5s; }
+@keyframes orbFloat {
+  0%, 100% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(30px, -30px) scale(1.05); }
+}
+
+/* ===== SCREENS ===== */
+.screen { display: none; position: relative; z-index: 1; }
+.screen.active { display: block; }
+
+/* ===== HOME SCREEN ===== */
+#home {
+  min-height: 100vh;
+  padding: 2rem 1rem 4rem;
+}
+.home-header {
+  text-align: center;
+  padding: 3rem 1rem 2.5rem;
+}
+.home-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: rgba(59,130,246,0.12);
+  border: 1px solid rgba(59,130,246,0.3);
+  color: #93c5fd;
+  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;
+  padding: 0.35rem 1rem; border-radius: 100px;
+  margin-bottom: 1.2rem;
+}
+.home-title {
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 900;
+  line-height: 1.05;
+  background: linear-gradient(135deg, #fff 20%, #93c5fd 60%, #06d6a0 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  margin-bottom: 0.8rem;
+}
+.home-sub { color: var(--muted2); font-size: 1rem; font-weight: 400; margin-bottom: 2rem; }
+
+/* Stats Bar */
+.stats-bar {
+  max-width: 700px; margin: 0 auto 2.5rem;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem;
+}
+.stat-pill {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 0.9rem 0.5rem;
+  text-align: center;
+  transition: transform 0.2s;
+}
+.stat-pill:hover { transform: translateY(-2px); }
+.stat-pill-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.6rem; font-weight: 700;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.stat-pill-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.2rem; }
+
+/* Unit Grid */
+.units-title {
+  max-width: 900px; margin: 0 auto 1.2rem;
+  font-size: 0.72rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.15em;
+  padding: 0 0.5rem;
+}
+.units-grid {
+  max-width: 900px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem; padding: 0 0.5rem;
+}
+.unit-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 18px; padding: 1.5rem;
+  cursor: pointer; position: relative; overflow: hidden;
+  transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+}
+.unit-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(59,130,246,0.05), transparent);
+  opacity: 0; transition: opacity 0.3s;
+}
+.unit-card:hover { transform: translateY(-4px); border-color: var(--border2); }
+.unit-card:hover::before { opacity: 1; }
+.unit-card.locked { cursor: not-allowed; opacity: 0.5; }
+.unit-card.locked:hover { transform: none; }
+.unit-card.completed { border-color: rgba(6,214,160,0.3); }
+.unit-card.completed:hover { box-shadow: var(--glow-green); }
+
+.unit-icon { font-size: 2rem; margin-bottom: 0.8rem; }
+.unit-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem; font-weight: 700; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 0.3rem;
+}
+.unit-name { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; line-height: 1.3; }
+.unit-desc { font-size: 0.8rem; color: var(--muted2); line-height: 1.5; margin-bottom: 1rem; }
+
+.unit-progress-wrap { background: rgba(255,255,255,0.06); border-radius: 100px; height: 5px; margin-bottom: 0.6rem; overflow: hidden; }
+.unit-progress-bar { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width 0.5s ease; }
+
+.unit-meta {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 0.72rem; color: var(--muted);
+}
+.unit-score-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem; font-weight: 700;
+  background: rgba(6,214,160,0.15); color: var(--accent2);
+  padding: 0.2rem 0.5rem; border-radius: 6px;
+}
+.lock-icon { font-size: 1.1rem; }
+.unit-tag {
+  font-size: 0.63rem; font-weight: 700; letter-spacing: 0.08em;
+  padding: 0.15rem 0.5rem; border-radius: 100px; text-transform: uppercase;
+}
+.tag-hot { background: rgba(244,63,94,0.15); color: #f87171; border: 1px solid rgba(244,63,94,0.25); }
+.tag-new { background: rgba(168,85,247,0.15); color: #c084fc; border: 1px solid rgba(168,85,247,0.25); }
+.tag-core { background: rgba(59,130,246,0.15); color: #93c5fd; border: 1px solid rgba(59,130,246,0.25); }
+
+/* Badges */
+.badges-section {
+  max-width: 900px; margin: 2.5rem auto 0;
+  padding: 0 0.5rem;
+}
+.badges-title {
+  font-size: 0.72rem; font-weight: 700; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 1rem;
+}
+.badges-row { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.badge-item {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 0.6rem 1rem;
+  display: flex; align-items: center; gap: 0.5rem;
+  font-size: 0.78rem; font-weight: 500;
+  transition: transform 0.2s;
+}
+.badge-item:hover { transform: scale(1.03); }
+.badge-item.earned { border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.08); }
+.badge-item.locked-badge { opacity: 0.35; filter: grayscale(1); }
+.badge-icon { font-size: 1.2rem; }
+
+/* ===== QUIZ SCREEN ===== */
+#quiz { min-height: 100vh; padding: 1.5rem 1rem 4rem; }
+.quiz-topbar {
+  max-width: 780px; margin: 0 auto 1.5rem;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  flex-wrap: wrap;
+}
+.back-btn {
+  background: var(--card); border: 1px solid var(--border);
+  color: var(--muted2); font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem; font-weight: 600; padding: 0.5rem 1rem;
+  border-radius: 10px; cursor: pointer; display: flex; align-items: center; gap: 0.4rem;
+  transition: all 0.2s;
+}
+.back-btn:hover { border-color: var(--border2); color: var(--text); }
+
+.quiz-hud {
+  display: flex; align-items: center; gap: 0.75rem;
+}
+.hud-chip {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 0.4rem 0.75rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; gap: 0.35rem;
+}
+.hud-xp { color: var(--accent3); }
+.hud-streak { color: #fb923c; }
+.hud-score { color: var(--accent2); }
+
+/* Progress bar */
+.quiz-progress-outer {
+  max-width: 780px; margin: 0 auto 2rem;
+  background: rgba(255,255,255,0.05); border-radius: 100px; height: 6px; overflow: hidden;
+}
+.quiz-progress-inner {
+  height: 100%; border-radius: 100px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transition: width 0.4s ease;
+}
+
+/* Q number */
+.q-counter {
+  max-width: 780px; margin: 0 auto 0.8rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem; font-weight: 700; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.15em;
+}
+
+/* Question card */
+.q-card {
+  max-width: 780px; margin: 0 auto;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 20px; padding: 2rem;
+  animation: slideIn 0.35s ease;
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.q-text {
+  font-size: 1.1rem; font-weight: 600; line-height: 1.6;
+  margin-bottom: 1.8rem;
+}
+.options-grid { display: flex; flex-direction: column; gap: 0.75rem; }
+.option-btn {
+  background: var(--card2); border: 1.5px solid var(--border);
+  border-radius: 13px; padding: 1rem 1.2rem;
+  cursor: pointer; text-align: left;
+  font-family: 'Outfit', sans-serif; font-size: 0.92rem; font-weight: 500; color: var(--text);
+  display: flex; align-items: center; gap: 0.9rem;
+  transition: all 0.18s; position: relative; overflow: hidden;
+}
+.option-btn:hover:not(.disabled) {
+  border-color: var(--border2); background: #1e2d4a; transform: translateX(3px);
+}
+.option-letter {
+  min-width: 28px; height: 28px; border-radius: 7px;
+  background: rgba(255,255,255,0.07);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 700; color: var(--muted2);
+  transition: all 0.18s;
+}
+.option-btn:hover:not(.disabled) .option-letter { background: var(--accent); color: #fff; }
+.option-btn.correct { border-color: var(--correct); background: rgba(6,214,160,0.1); }
+.option-btn.correct .option-letter { background: var(--correct); color: #fff; }
+.option-btn.wrong { border-color: var(--wrong); background: rgba(244,63,94,0.1); }
+.option-btn.wrong .option-letter { background: var(--wrong); color: #fff; }
+.option-btn.disabled { cursor: not-allowed; }
+.option-btn.reveal-correct { border-color: rgba(6,214,160,0.5); }
+
+/* Feedback */
+.feedback-box {
+  max-width: 780px; margin: 1rem auto 0;
+  border-radius: 14px; padding: 1rem 1.3rem;
+  font-size: 0.88rem; line-height: 1.6;
+  display: none; animation: fadeIn 0.3s ease;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.feedback-box.correct-fb { background: rgba(6,214,160,0.1); border: 1px solid rgba(6,214,160,0.3); color: #6ee7b7; }
+.feedback-box.wrong-fb { background: rgba(244,63,94,0.08); border: 1px solid rgba(244,63,94,0.25); color: #fca5a5; }
+.feedback-title { font-weight: 700; margin-bottom: 0.3rem; font-size: 0.92rem; }
+
+.next-btn {
+  max-width: 780px; margin: 1.2rem auto 0; display: none;
+  width: 100%;
+  background: linear-gradient(135deg, var(--accent), #6366f1);
+  border: none; border-radius: 13px; padding: 1rem 1.5rem;
+  color: #fff; font-family: 'Outfit', sans-serif; font-size: 1rem; font-weight: 700;
+  cursor: pointer; letter-spacing: 0.02em;
+  transition: all 0.2s; box-shadow: 0 4px 20px rgba(59,130,246,0.3);
+}
+.next-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(59,130,246,0.4); }
+
+/* XP Pop */
+.xp-pop {
+  position: fixed; pointer-events: none; z-index: 999;
+  font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; font-weight: 800;
+  color: var(--accent3); text-shadow: 0 0 20px rgba(245,158,11,0.5);
+  animation: xpFloat 1.4s ease forwards;
+}
+@keyframes xpFloat {
+  0% { opacity: 1; transform: translateY(0) scale(0.8); }
+  30% { transform: translateY(-10px) scale(1.1); }
+  100% { opacity: 0; transform: translateY(-50px) scale(1); }
+}
+
+/* ===== RESULT SCREEN ===== */
+#result { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; }
+.result-card {
+  max-width: 600px; width: 100%;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 24px; padding: 2.5rem 2rem;
+  text-align: center;
+  animation: scaleIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.85); }
+  to { opacity: 1; transform: scale(1); }
+}
+.result-emoji { font-size: 4rem; margin-bottom: 1rem; animation: bounce 0.6s ease 0.3s both; }
+@keyframes bounce {
+  0% { transform: scale(0); }
+  60% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+.result-title { font-size: 1.8rem; font-weight: 900; margin-bottom: 0.4rem; }
+.result-sub { color: var(--muted2); font-size: 0.92rem; margin-bottom: 1.8rem; }
+.result-score-ring {
+  width: 130px; height: 130px; margin: 0 auto 1.5rem;
+  border-radius: 50%; position: relative;
+  display: flex; align-items: center; justify-content: center;
+  background: conic-gradient(var(--accent2) var(--pct, 0%), rgba(255,255,255,0.05) 0%);
+}
+.result-score-inner {
+  width: 100px; height: 100px; background: var(--card);
+  border-radius: 50%; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+.result-score-num {
+  font-family: 'JetBrains Mono', monospace; font-size: 1.7rem; font-weight: 800;
+  background: linear-gradient(135deg, var(--accent2), var(--accent));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.result-score-label { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+.result-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.5rem;
+}
+.rs-item {
+  background: var(--card2); border-radius: 12px; padding: 0.8rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+.rs-num { font-size: 1.4rem; font-weight: 800; }
+.rs-label { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.2rem; }
+.rs-correct .rs-num { color: var(--correct); }
+.rs-wrong .rs-num { color: var(--wrong); }
+.rs-xp .rs-num { color: var(--accent3); }
+
+.earned-badge-box {
+  background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.3);
+  border-radius: 14px; padding: 1rem; margin-bottom: 1.5rem;
+  display: none;
+}
+.earned-badge-box .badge-icon { font-size: 2rem; }
+.earned-badge-title { font-weight: 700; margin: 0.3rem 0 0.2rem; }
+.earned-badge-desc { font-size: 0.78rem; color: var(--muted2); }
+
+.result-btns { display: flex; gap: 0.75rem; }
+.result-btn {
+  flex: 1; border-radius: 13px; padding: 0.9rem;
+  font-family: 'Outfit', sans-serif; font-size: 0.92rem; font-weight: 700; cursor: pointer;
+  transition: all 0.2s; border: none;
+}
+.btn-retry { background: var(--card2); border: 1px solid var(--border); color: var(--text); }
+.btn-retry:hover { border-color: var(--border2); }
+.btn-home { background: linear-gradient(135deg, var(--accent), #6366f1); color: #fff; box-shadow: 0 4px 20px rgba(59,130,246,0.3); }
+.btn-home:hover { transform: translateY(-2px); }
+
+/* Confetti canvas */
+#confetti-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 998; }
+
+/* Streak fire */
+.streak-fire { animation: firePulse 0.5s ease; }
+@keyframes firePulse {
+  0% { transform: scale(1); } 50% { transform: scale(1.4); } 100% { transform: scale(1); }
+}
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
+  background: var(--card2); border: 1px solid var(--border2);
+  border-radius: 12px; padding: 0.75rem 1.5rem;
+  font-size: 0.85rem; font-weight: 600; z-index: 1000;
+  transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* Responsive */
+@media (max-width: 500px) {
+  .stats-bar { grid-template-columns: repeat(2, 1fr); }
+  .q-card { padding: 1.3rem; }
+  .result-stats { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Unlock animation */
+@keyframes unlockPop {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.05); box-shadow: 0 0 30px rgba(59,130,246,0.4); }
+  100% { transform: scale(1); }
+}
+.just-unlocked { animation: unlockPop 0.6s ease; }
+</style>
+</head>
+<body>
+<div class="bg-orbs">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+</div>
+<canvas id="confetti-canvas"></canvas>
+<div class="toast" id="toast"></div>
+
+<!-- HOME SCREEN -->
+<div id="home" class="screen active">
+  <div class="home-header">
+    <div class="home-badge">⚡ BEU 7th Sem · Code 100713</div>
+    <h1 class="home-title">Soft Skills<br>MCQ Arena</h1>
+    <p class="home-sub">Master every unit. Earn XP. Unlock chapters. Ace your exam.</p>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-pill">
+      <div class="stat-pill-num" id="total-xp">0</div>
+      <div class="stat-pill-label">Total XP</div>
+    </div>
+    <div class="stat-pill">
+      <div class="stat-pill-num" id="best-streak">0</div>
+      <div class="stat-pill-label">Best Streak</div>
+    </div>
+    <div class="stat-pill">
+      <div class="stat-pill-num" id="qs-answered">0</div>
+      <div class="stat-pill-label">Qs Answered</div>
+    </div>
+    <div class="stat-pill">
+      <div class="stat-pill-num" id="accuracy-stat">0%</div>
+      <div class="stat-pill-label">Accuracy</div>
+    </div>
+  </div>
+
+  <div class="units-title">📚 Select a Unit to Practice</div>
+  <div class="units-grid" id="units-grid"></div>
+
+  <div class="badges-section">
+    <div class="badges-title">🏆 Achievement Badges</div>
+    <div class="badges-row" id="badges-row"></div>
+  </div>
+</div>
+
+<!-- QUIZ SCREEN -->
+<div id="quiz" class="screen">
+  <div class="quiz-topbar">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <div class="quiz-hud">
+      <div class="hud-chip hud-streak" id="streak-display">🔥 0</div>
+      <div class="hud-chip hud-xp" id="xp-display">⚡ 0 XP</div>
+      <div class="hud-chip hud-score" id="score-display">✓ 0</div>
+    </div>
+  </div>
+  <div class="quiz-progress-outer">
+    <div class="quiz-progress-inner" id="quiz-progress"></div>
+  </div>
+  <div class="q-counter" id="q-counter"></div>
+  <div class="q-card" id="q-card">
+    <div class="q-text" id="q-text"></div>
+    <div class="options-grid" id="options-grid"></div>
+  </div>
+  <div class="feedback-box" id="feedback-box">
+    <div class="feedback-title" id="feedback-title"></div>
+    <div id="feedback-text"></div>
+  </div>
+  <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question →</button>
+</div>
+
+<!-- RESULT SCREEN -->
+<div id="result" class="screen">
+  <div class="result-card">
+    <div class="result-emoji" id="result-emoji">🎯</div>
+    <div class="result-title" id="result-title">Unit Complete!</div>
+    <div class="result-sub" id="result-sub"></div>
+    <div class="result-score-ring" id="result-ring" style="--pct:0%">
+      <div class="result-score-inner">
+        <div class="result-score-num" id="result-score-num">0%</div>
+        <div class="result-score-label">Score</div>
+      </div>
+    </div>
+    <div class="result-stats">
+      <div class="rs-item rs-correct"><div class="rs-num" id="r-correct">0</div><div class="rs-label">Correct</div></div>
+      <div class="rs-item rs-wrong"><div class="rs-num" id="r-wrong">0</div><div class="rs-label">Wrong</div></div>
+      <div class="rs-item rs-xp"><div class="rs-num" id="r-xp">0</div><div class="rs-label">XP Earned</div></div>
+    </div>
+    <div class="earned-badge-box" id="earned-badge-box">
+      <div class="badge-icon" id="earned-badge-icon"></div>
+      <div class="earned-badge-title" id="earned-badge-title"></div>
+      <div class="earned-badge-desc" id="earned-badge-desc"></div>
+    </div>
+    <div class="result-btns">
+      <button class="result-btn btn-retry" onclick="retryUnit()">↩ Retry</button>
+      <button class="result-btn btn-home" onclick="goHome()">🏠 Home</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// =================== QUESTION BANK ===================
+const UNITS = [
+  {
+    id: 1, name: "Self-Discovery & Analysis", icon: "🔍",
+    desc: "SWOT, Self-esteem, Self-confidence, Who Am I",
+    tag: "hot", tagLabel: "🔥 Most Asked",
+    color: "#3b82f6",
+    questions: [
+      { q: "What does the 'S' in SWOT Analysis stand for?", options: ["Schedule","Strengths","Selection","Strategy"], ans: 1, exp: "SWOT stands for Strengths, Weaknesses, Opportunities, Threats. 'S' is Strengths — internal positive attributes." },
+      { q: "SWOT Analysis is primarily used for:", options: ["Financial auditing","Self-assessment and strategic planning","Technical coding","Marketing campaigns only"], ans: 1, exp: "SWOT Analysis is a tool for self-assessment and strategic planning, identifying internal and external factors affecting goals." },
+      { q: "Which component of SWOT is INTERNAL?", options: ["Opportunities","Threats","Strengths","Market trends"], ans: 2, exp: "Strengths and Weaknesses are internal factors. Opportunities and Threats are external factors in SWOT." },
+      { q: "Self-esteem is best defined as:", options: ["How tall you are","Your overall sense of personal worth and value","Your technical skills","Your social media followers"], ans: 1, exp: "Self-esteem refers to one's overall subjective sense of personal worth or value — how much you appreciate yourself." },
+      { q: "Which of the following BEST boosts self-confidence?", options: ["Avoiding all challenges","Comparing yourself to others","Setting small achievable goals and completing them","Seeking constant approval from others"], ans: 2, exp: "Completing small achievable goals builds a track record of success, which directly boosts self-confidence over time." },
+      { q: "The 'Who Am I' exercise helps in:", options: ["Financial planning","Self-discovery and understanding personal values","Learning coding","Writing reports"], ans: 1, exp: "The 'Who Am I' exercise is a reflective activity that helps individuals understand their values, beliefs, strengths and identity." },
+      { q: "Low self-esteem typically leads to:", options: ["Better performance","Increased risk-taking","Self-doubt and avoidance of challenges","Higher creativity"], ans: 2, exp: "Low self-esteem leads to self-doubt, fear of failure, and avoidance of challenges, negatively affecting performance." },
+      { q: "Which of the following is an EXTERNAL factor in SWOT?", options: ["Strength","Weakness","Opportunity","Personal values"], ans: 2, exp: "Opportunities and Threats are external factors — they exist in the environment outside of you." },
+      { q: "Self-confidence is different from self-esteem because:", options: ["They are exactly the same","Self-confidence is about belief in specific abilities; self-esteem is overall self-worth","Self-esteem is about abilities; self-confidence is overall worth","Neither is related to performance"], ans: 1, exp: "Self-confidence is task-specific (belief in your ability to do something), while self-esteem is your overall sense of self-worth." },
+      { q: "A person with HIGH self-esteem typically:", options: ["Avoids all criticism","Blames others for failures","Accepts feedback constructively and believes in their worth","Seeks constant validation"], ans: 2, exp: "High self-esteem individuals handle criticism constructively and maintain their sense of worth even when facing failures." },
+      { q: "Which aspect does 'T' in SWOT represent?", options: ["Talent","Time","Threats","Targets"], ans: 2, exp: "'T' in SWOT stands for Threats — external negative factors that could create challenges." },
+      { q: "Self-analysis involves:", options: ["Analyzing others' behavior","Critically examining your own strengths, weaknesses, and values","Studying market trends","Evaluating company performance"], ans: 1, exp: "Self-analysis is the process of examining your own thoughts, behaviors, strengths, and areas of improvement." },
+      { q: "The attribute most associated with high self-confidence is:", options: ["Arrogance","Willingness to take on challenges and speak up","Stubbornness","Overconfidence without ability"], ans: 1, exp: "True self-confidence is characterized by willingness to take on challenges, speak up, and believe in your capabilities." },
+      { q: "Improving self-esteem can be achieved by:", options: ["Only comparing with successful people","Celebrating small wins and practicing positive self-talk","Avoiding all feedback","Doing nothing"], ans: 1, exp: "Celebrating small achievements and positive self-talk are evidence-based techniques for improving self-esteem." },
+      { q: "In SWOT, 'Weaknesses' refers to:", options: ["External negative factors","Internal limitations or areas needing improvement","Market competition","Government regulations"], ans: 1, exp: "Weaknesses are internal factors — your own limitations, skill gaps, or areas that need development." },
+      { q: "Self-discovery primarily leads to:", options: ["Financial gain","Better clarity about personal values, goals and purpose","Social media popularity","Academic degrees only"], ans: 1, exp: "Self-discovery helps you understand who you are — your values, purpose, strengths — which guides better life decisions." },
+      { q: "Which behavior indicates HEALTHY self-esteem?", options: ["Never admitting mistakes","Excessive bragging about achievements","Accepting imperfections while maintaining self-worth","Avoiding all social interactions"], ans: 2, exp: "Healthy self-esteem means accepting you're imperfect while still maintaining a positive sense of self-worth." },
+      { q: "The 'O' in SWOT stands for:", options: ["Obstacles","Opinions","Opportunities","Operations"], ans: 2, exp: "'O' stands for Opportunities — external positive factors you can leverage to achieve your goals." },
+      { q: "A student afraid to speak in class likely has:", options: ["High self-confidence","Low self-confidence","Strong leadership skills","Excellent communication"], ans: 1, exp: "Fear of speaking in class is a typical indicator of low self-confidence in academic settings." },
+      { q: "Self-esteem develops primarily from:", options: ["Genetics alone","Early childhood experiences, relationships, and achievements","Only academic performance","Social media likes"], ans: 1, exp: "Self-esteem is shaped by childhood experiences, family relationships, achievements, and how others respond to us." },
+      { q: "What is a key output of doing a personal SWOT Analysis?", options: ["A business plan","A self-improvement strategy","A financial budget","A technical report"], ans: 1, exp: "Personal SWOT leads to a clear self-improvement strategy by identifying what to build on and what to work on." },
+      { q: "Which statement BEST describes self-confidence?", options: ["Believing you are better than everyone","Trust in your own abilities and judgment","Ignoring your weaknesses","Never asking for help"], ans: 1, exp: "Self-confidence is fundamentally about trusting your own abilities, judgment, and capacity to handle situations." },
+      { q: "Attributes in self-discovery refer to:", options: ["Only negative traits","Qualities and characteristics that define a person","Company assets","Technical specifications"], ans: 1, exp: "Attributes are qualities, characteristics, and traits — both positive and developmental — that define who you are." },
+      { q: "Which is NOT a technique to improve self-confidence?", options: ["Visualization","Positive self-talk","Constantly focusing on past failures","Setting and achieving small goals"], ans: 2, exp: "Constantly focusing on past failures reinforces negativity and undermines self-confidence rather than building it." },
+      { q: "In SWOT, identifying internal strengths helps you:", options: ["Avoid all competition","Leverage your best assets to maximize opportunities","Only write better resumes","Eliminate all weaknesses instantly"], ans: 1, exp: "Knowing your strengths allows you to strategically apply them to capitalize on opportunities." },
+      { q: "What does 'W' in SWOT represent?", options: ["Willpower","Weaknesses","Wealth","Workflow"], ans: 1, exp: "'W' stands for Weaknesses — your internal limitations that could hinder your progress toward goals." },
+      { q: "Self-awareness is a foundation of:", options: ["Technical skills only","Emotional intelligence and personal development","Financial planning only","Social media management"], ans: 1, exp: "Self-awareness is a core component of emotional intelligence and is essential for personal and professional growth." },
+      { q: "Which is a POSITIVE outcome of high self-esteem in the workplace?", options: ["Arrogance and refusing feedback","Better resilience and handling of professional challenges","Overconfidence leading to mistakes","Avoiding collaboration"], ans: 1, exp: "High self-esteem builds resilience — you can handle challenges, setbacks, and criticism without falling apart." },
+      { q: "The primary purpose of self-analysis is:", options: ["To find faults in others","To understand yourself for personal growth and better decisions","To write academic papers","To impress employers"], ans: 1, exp: "Self-analysis is done to gain clear self-understanding, which enables better decisions and targeted personal growth." },
+      { q: "A realistic self-assessment in SWOT means:", options: ["Only listing positive traits","Ignoring weaknesses","Honestly evaluating both strengths and weaknesses","Copying others' assessments"], ans: 2, exp: "Realistic self-assessment requires honest evaluation of both strengths and weaknesses to make the SWOT useful." },
+      { q: "Which person is demonstrating self-confidence?", options: ["Someone who never disagrees with anyone","Someone who presents their ideas clearly even when challenged","Someone who always seeks approval","Someone who avoids new experiences"], ans: 1, exp: "Speaking up clearly even when challenged is a key behavioral indicator of healthy self-confidence." },
+      { q: "What does developing self-awareness involve?", options: ["Memorizing facts","Reflecting on your thoughts, emotions, behaviors and their impact","Ignoring feedback","Focusing only on others"], ans: 1, exp: "Self-awareness involves ongoing reflection on how your thoughts, emotions, and behaviors affect yourself and others." },
+    ]
+  },
+  {
+    id: 2, name: "Creative & Innovative Thinking", icon: "💡",
+    desc: "Out-of-box thinking, lateral thinking, creativity",
+    tag: "core", tagLabel: "📖 Core",
+    color: "#a855f7",
+    questions: [
+      { q: "Lateral Thinking was introduced by:", options: ["Abraham Maslow","Daniel Goleman","Edward de Bono","Peter Drucker"], ans: 2, exp: "Edward de Bono coined the term 'Lateral Thinking' in his 1967 book, describing indirect and creative approaches to problem-solving." },
+      { q: "Out-of-the-box thinking primarily means:", options: ["Thinking inside a physical box","Approaching problems with unconventional and creative solutions","Following standard procedures only","Using traditional methods"], ans: 1, exp: "Out-of-the-box thinking means approaching problems from new, unconventional angles rather than using standard solutions." },
+      { q: "Which of the following is an example of lateral thinking?", options: ["Solving a math problem using its formula","Using a credit card as a screwdriver","Following a recipe exactly","Doing a task exactly as instructed"], ans: 1, exp: "Using a credit card as a screwdriver is lateral thinking — repurposing an object for an unconventional use." },
+      { q: "Vertical thinking is DIFFERENT from lateral thinking because:", options: ["Vertical thinking is creative, lateral is logical","Vertical thinking is logical and step-by-step; lateral is creative and indirect","They are exactly the same","Lateral thinking is only for artists"], ans: 1, exp: "Vertical thinking follows a logical, sequential path. Lateral thinking makes jumps and approaches problems from unexpected directions." },
+      { q: "Creativity in the workplace helps:", options: ["Stifle productivity","Generate new ideas and innovative solutions","Increase conflicts","Reduce teamwork"], ans: 1, exp: "Creativity generates fresh ideas, innovative solutions, and helps teams solve complex problems more effectively." },
+      { q: "Which is a technique for out-of-box thinking?", options: ["Sticking rigidly to one method","Brainstorming, mind mapping, and random word association","Only using existing solutions","Avoiding all new ideas"], ans: 1, exp: "Brainstorming, mind mapping, and random word techniques are proven methods for out-of-box thinking." },
+      { q: "The term 'thinking outside the box' originates from which puzzle?", options: ["The Tower of Hanoi","The Nine Dots Puzzle","Rubik's Cube","The Monty Hall Problem"], ans: 1, exp: "The nine dots puzzle — connecting 9 dots in 3x3 grid with 4 lines — requires going outside the implied boundary, inspiring the phrase." },
+      { q: "Lateral thinking is most useful when:", options: ["Standard solutions work perfectly","Problems seem unsolvable or require fresh perspectives","Doing repetitive tasks","Following compliance procedures"], ans: 1, exp: "Lateral thinking shines when conventional approaches fail — it generates fresh perspectives for seemingly unsolvable problems." },
+      { q: "Which company famously uses lateral/creative thinking in its culture?", options: ["Coal mines","Google and Apple","Traditional banks only","Government offices"], ans: 1, exp: "Tech companies like Google and Apple have built creative thinking into their culture, using it to drive innovation." },
+      { q: "Brainstorming involves:", options: ["Criticizing every idea immediately","Generating many ideas freely without judgment initially","Only senior people suggesting ideas","Using only existing solutions"], ans: 1, exp: "Brainstorming means generating many ideas freely and without judgment first, then evaluating them afterward." },
+      { q: "What is a key barrier to creative thinking?", options: ["Openness to new experiences","Fear of failure and ridicule","Diverse perspectives","Curiosity"], ans: 1, exp: "Fear of failure, judgment, or ridicule is a primary barrier that prevents people from expressing or developing creative ideas." },
+      { q: "The 'Six Thinking Hats' technique was developed by:", options: ["Maslow","Edward de Bono","Freud","Daniel Goleman"], ans: 1, exp: "Edward de Bono also developed the Six Thinking Hats — a parallel thinking tool that uses different colored hats to represent different perspectives." },
+      { q: "Innovation differs from creativity in that:", options: ["They are identical","Creativity is generating new ideas; innovation is implementing them successfully","Innovation is only for scientists","Creativity requires money"], ans: 1, exp: "Creativity is about generating new ideas. Innovation is taking those ideas and successfully implementing them to create value." },
+      { q: "Which mindset most supports creative thinking?", options: ["Fixed mindset","Growth mindset","Analytical-only mindset","Critical mindset only"], ans: 1, exp: "A growth mindset — believing abilities can be developed — supports risk-taking and creative exploration." },
+      { q: "Random word association in creativity helps by:", options: ["Confusing the problem","Triggering unexpected connections and novel solutions","Only wasting time","Repeating existing solutions"], ans: 1, exp: "Random word association forces connections between unrelated concepts, often triggering unexpected creative insights." },
+      { q: "Convergent thinking involves:", options: ["Finding multiple creative solutions","Finding a single best solution logically","No analytical reasoning","Only brainstorming"], ans: 1, exp: "Convergent thinking focuses on finding one correct or best solution through logical analysis — opposite of divergent/lateral thinking." },
+      { q: "Divergent thinking is associated with:", options: ["Finding one right answer","Generating multiple possible solutions and ideas","Following procedures","Memorizing facts"], ans: 1, exp: "Divergent thinking generates many possible solutions — it's associated with creativity and lateral thinking." },
+      { q: "Out-of-the-box thinking in a team competition helps by:", options: ["Ensuring you follow competitors","Providing unique solutions competitors haven't considered","Reducing team cohesion","Slowing down work"], ans: 1, exp: "Out-of-the-box thinking gives teams a competitive edge by producing unique, unexpected solutions that stand out." },
+      { q: "Which of these is NOT a creative thinking technique?", options: ["Brainstorming","SCAMPER method","Mind Mapping","Strict rule-following only"], ans: 3, exp: "Strict rule-following is the opposite of creative thinking. Brainstorming, SCAMPER, and Mind Mapping are established creativity techniques." },
+      { q: "SCAMPER stands for:", options: ["Study, Create, Analyze, Make, Plan, Execute, Review","Substitute, Combine, Adapt, Modify, Put to other uses, Eliminate, Rearrange","Skills, Competencies, Attitudes, Mindset, Purpose, Execution, Results","None of the above"], ans: 1, exp: "SCAMPER is a creativity tool: Substitute, Combine, Adapt, Modify/Magnify, Put to other uses, Eliminate, Rearrange." },
+      { q: "What does a mind map help with?", options: ["Financial calculations only","Visually organizing ideas and their connections around a central concept","Only studying for exams","Writing code"], ans: 1, exp: "Mind maps visually organize ideas radiating from a central concept, helping with creative brainstorming, note-taking and planning." },
+      { q: "Curiosity is important for creativity because:", options: ["It slows down work","It drives exploration and discovery of new ideas","It causes confusion","It is irrelevant to work"], ans: 1, exp: "Curiosity drives people to explore beyond the obvious, ask 'what if' questions, and discover creative solutions." },
+      { q: "Which statement best describes creative thinking at work?", options: ["Always doing things differently for the sake of it","Using imagination to find better ways to solve real problems","Ignoring established best practices completely","Only artists need it"], ans: 1, exp: "Creative thinking at work means using imagination and novel approaches to solve real problems more effectively." },
+      { q: "Lateral thinking involves:", options: ["Always using the most direct path","Making unexpected connections and reframing problems from different angles","Following only one approach","Using only data and logic"], ans: 1, exp: "Lateral thinking reframes problems, makes unexpected connections, and approaches challenges from unconventional directions." },
+      { q: "Which of the following best supports creative thinking in a team?", options: ["Punishing wrong ideas","Encouraging psychological safety where all ideas are welcomed","Only allowing senior members to speak","Strictly following agenda"], ans: 1, exp: "Psychological safety — where team members aren't afraid of being judged — is the most important enabler of team creativity." },
+      { q: "The nine-dot puzzle teaches that creative solutions often require:", options: ["Staying within assumed boundaries","Going beyond self-imposed boundaries and assumptions","More data","Stricter rules"], ans: 1, exp: "The nine-dot puzzle shows that we often impose unnecessary constraints on ourselves — creativity requires challenging these." },
+      { q: "Out-of-box thinking is most relevant in which scenario?", options: ["Filling a standard form","Developing a breakthrough product","Signing attendance","Routine data entry"], ans: 1, exp: "Breakthrough product development requires unconventional thinking — it's a perfect scenario for out-of-box approaches." },
+      { q: "Incubation in creativity refers to:", options: ["Hatching eggs","A period of subconscious processing after active work on a problem","Immediate solution finding","Rejecting all ideas"], ans: 1, exp: "Incubation is the stage where you step away from a problem, allowing the subconscious mind to process and often generate insights." },
+      { q: "The 'Aha!' or 'Eureka' moment in creativity is called:", options: ["Incubation","Illumination","Preparation","Verification"], ans: 1, exp: "The moment of sudden insight or solution discovery is called Illumination in Wallas's four stages of creativity." },
+      { q: "Which character trait is most linked to creative thinking?", options: ["Rigidity","Openness to experience","Strict conformity","Avoidance of ambiguity"], ans: 1, exp: "Openness to experience is consistently the personality trait most strongly linked to creative thinking and innovation." },
+    ]
+  },
+  {
+    id: 3, name: "Attitude & Motivation", icon: "🔥",
+    desc: "Attitude, etiquette, motivation, Maslow's theory",
+    tag: "hot", tagLabel: "🔥 Most Asked",
+    color: "#f59e0b",
+    questions: [
+      { q: "Attitude is defined as:", options: ["A physical trait","A learned predisposition to respond favorably or unfavorably to an object, person, or situation","A genetic characteristic","Only positive thinking"], ans: 1, exp: "Attitude is a learned tendency to evaluate and respond to people, objects, or situations in a consistent way." },
+      { q: "The three components of attitude are:", options: ["Thinking, Feeling, Behavior","Cognitive, Affective, Behavioral","IQ, EQ, SQ","Verbal, Non-verbal, Written"], ans: 1, exp: "Attitude has three components: Cognitive (thoughts/beliefs), Affective (feelings/emotions), and Behavioral (actions/intentions)." },
+      { q: "Which theorist developed the Hierarchy of Needs?", options: ["Daniel Goleman","Edward de Bono","Abraham Maslow","Frederick Herzberg"], ans: 2, exp: "Abraham Maslow developed the Hierarchy of Needs in 1943, a motivational theory with five levels of human needs." },
+      { q: "The LOWEST level in Maslow's hierarchy is:", options: ["Safety needs","Self-actualization","Physiological needs","Esteem needs"], ans: 2, exp: "Physiological needs (food, water, shelter, sleep) are at the base of Maslow's hierarchy — they must be met first." },
+      { q: "Self-actualization in Maslow's hierarchy means:", options: ["Basic survival needs","Financial security","Reaching one's full potential","Social belonging"], ans: 2, exp: "Self-actualization is the highest level — the realization of one's maximum potential and seeking personal growth." },
+      { q: "Intrinsic motivation comes from:", options: ["External rewards like money","Internal satisfaction and personal interest","Fear of punishment","Social pressure"], ans: 1, exp: "Intrinsic motivation is driven by internal rewards — the inherent satisfaction or interest in the task itself." },
+      { q: "Extrinsic motivation is driven by:", options: ["Personal interest","Internal satisfaction","External rewards such as money, grades, or praise","Personal values"], ans: 2, exp: "Extrinsic motivation relies on external incentives — rewards, recognition, grades, salary, or avoiding punishment." },
+      { q: "Positive attitude at work leads to:", options: ["More conflicts","Better performance, teamwork, and resilience","Reduced creativity","Isolation from colleagues"], ans: 1, exp: "A positive attitude improves performance, fosters better relationships, enhances teamwork, and builds resilience." },
+      { q: "Etiquette in the workplace refers to:", options: ["Technical skills only","Customary code of polite behavior in professional settings","Formal dress only","Avoiding all communication"], ans: 1, exp: "Workplace etiquette is the set of conventional norms for respectful, professional conduct in a work environment." },
+      { q: "Which is an example of good workplace etiquette?", options: ["Interrupting colleagues frequently","Gossiping about coworkers","Being punctual and respecting others' time","Taking credit for others' work"], ans: 2, exp: "Punctuality and respecting others' time are fundamental examples of professional workplace etiquette." },
+      { q: "According to Maslow, which need comes AFTER safety?", options: ["Physiological","Self-actualization","Love and Belonging","Esteem"], ans: 2, exp: "After safety needs are met, Maslow says humans seek love and belonging — social connections, friendship, and relationships." },
+      { q: "Self-talk in motivation refers to:", options: ["Talking to yourself in public","Internal dialogue that influences your confidence and performance","Writing a diary","Speaking with coaches only"], ans: 1, exp: "Self-talk is the internal voice or dialogue that shapes your thoughts, attitudes, and ultimately your performance." },
+      { q: "Herzberg's Two-Factor Theory identifies:", options: ["Intrinsic and extrinsic factors","Hygiene factors and Motivators","Physiological and psychological needs","Positive and negative attitudes"], ans: 1, exp: "Herzberg identified Hygiene Factors (prevent dissatisfaction) and Motivators (create satisfaction) as two distinct categories." },
+      { q: "A 'negative attitude' at work typically results in:", options: ["Higher productivity","Team harmony","Reduced morale and increased conflict","Better customer service"], ans: 2, exp: "Negative attitudes spread toxicity in teams, reduce morale, create conflict, and decrease overall productivity." },
+      { q: "Which factor does NOT directly influence attitude?", options: ["Family background","Culture and environment","Blood type","Past experiences"], ans: 2, exp: "Blood type has no scientific relationship with attitude. Family, culture, and experiences are proven attitude influences." },
+      { q: "Motivation in management helps managers by:", options: ["Reducing their own workload only","Inspiring and guiding teams to achieve goals effectively","Avoiding responsibility","Creating more bureaucracy"], ans: 1, exp: "Motivated managers inspire teams, maintain morale, set clear direction, and guide people toward achieving organizational goals." },
+      { q: "Which is a key challenge related to attitude change?", options: ["Having too much knowledge","Deep-rooted beliefs and cognitive biases are hard to change","Being too educated","Changing jobs frequently"], ans: 1, exp: "Attitude change is difficult because people's deep-seated beliefs, values, and cognitive biases resist modification." },
+      { q: "What is 'attitude of gratitude' in professional life?", options: ["Thanking people only for monetary rewards","Consciously appreciating people, opportunities, and experiences which builds positive relationships","Being overly submissive","Only saying thank you formally"], ans: 1, exp: "Gratitude attitude means genuinely appreciating others and circumstances, which builds trust, positivity, and strong professional bonds." },
+      { q: "In Maslow's hierarchy, esteem needs include:", options: ["Food and water","Safety and security","Recognition, status, and self-respect","Friendship and love"], ans: 2, exp: "Esteem needs (Level 4) include the desire for achievement, recognition, reputation, and self-respect." },
+      { q: "Which is the BEST description of a motivated employee?", options: ["Works only for salary","Works extra hours without question","Takes initiative, is engaged, and drives results beyond minimum requirements","Never questions management"], ans: 2, exp: "Motivated employees are engaged, take initiative, and consistently perform beyond the minimum — they're driven by purpose." },
+      { q: "Attitude affects workplace performance by:", options: ["Having no effect","Directly shaping behavior, effort, and interaction quality","Only affecting dress choices","Only influencing lunch breaks"], ans: 1, exp: "Attitude directly shapes behavior, effort level, interaction quality, and resilience — all of which determine performance." },
+      { q: "Which of these is a component of professional etiquette?", options: ["Arriving late to show you're busy","Respectful communication, punctuality, and maintaining professional boundaries","Ignoring emails for days","Loud phone calls in shared spaces"], ans: 1, exp: "Professional etiquette includes respectful communication, punctuality, and maintaining appropriate professional boundaries." },
+      { q: "Self-motivation is important because:", options: ["External rewards are always available","It sustains effort and performance even when external incentives are absent","It replaces all skills","Managers can always motivate everyone"], ans: 1, exp: "Self-motivation ensures continued effort when external rewards are absent — it's the most sustainable form of motivation." },
+      { q: "According to Maslow, needs are fulfilled:", options: ["Randomly in any order","Simultaneously all at once","Hierarchically — lower needs before higher ones","From the top down"], ans: 2, exp: "Maslow proposed that needs must be satisfied in order — lower-level needs first before higher-level needs become motivating." },
+      { q: "Which statement about motivation is TRUE?", options: ["All people are motivated by the same things","Motivation is one-size-fits-all","Individual differences mean different things motivate different people","Money always motivates everyone equally"], ans: 2, exp: "Motivation varies greatly between individuals — what motivates one person may not motivate another, so managers must understand each person." },
+      { q: "Etiquette in email communication includes:", options: ["Using all caps to emphasize","Replying to all unnecessarily","Clear subject lines, professional tone, and timely responses","Sending emails at midnight always"], ans: 2, exp: "Good email etiquette: clear subject lines, professional/respectful tone, appropriate use of Reply All, and timely responses." },
+      { q: "The affective component of attitude relates to:", options: ["What you know about something","How you feel emotionally about something","What you intend to do","Your behavioral response"], ans: 1, exp: "The affective component is the emotional/feeling dimension of attitude — how something makes you feel (like/dislike, love/hate)." },
+      { q: "Which motivational factor is INTRINSIC?", options: ["Salary increase","Bonus payment","Personal growth and sense of achievement","Company car"], ans: 2, exp: "Personal growth and sense of achievement are internal rewards — they come from within and represent intrinsic motivation." },
+      { q: "Factors influencing motivation include:", options: ["Only salary","Goal clarity, recognition, work environment, leadership, and personal values","Only fear of punishment","Only competition"], ans: 1, exp: "Motivation is influenced by multiple factors: goal clarity, recognition, meaningful work, good leadership, environment, and personal values." },
+      { q: "Which is a sign of poor workplace etiquette?", options: ["Active listening in meetings","Sending professional emails","Interrupting others and taking credit for their work","Meeting deadlines consistently"], ans: 2, exp: "Interrupting others and taking credit for their work are clear violations of professional workplace etiquette." },
+    ]
+  },
+  {
+    id: 4, name: "Strategic Goal Setting", icon: "🎯",
+    desc: "SMART Goals, wish list, short/long-term, blueprint for success",
+    tag: "core", tagLabel: "📖 Core",
+    color: "#06d6a0",
+    questions: [
+      { q: "SMART Goals stands for:", options: ["Simple, Meaningful, Achievable, Realistic, Timely","Specific, Measurable, Achievable, Relevant, Time-bound","Strategic, Manageable, Actionable, Results-based, Timed","Significant, Motivating, Attainable, Reasonable, Trackable"], ans: 1, exp: "SMART: Specific (clear), Measurable (trackable), Achievable (realistic), Relevant (aligned to bigger goals), Time-bound (deadline)." },
+      { q: "Which is the BEST example of a SMART Goal?", options: ["I want to be successful","I will exercise more","I will complete 10 practice MCQs daily for 30 days starting today","Improve my grades"], ans: 2, exp: "This is SMART: Specific (10 MCQs), Measurable (10/day), Achievable (reasonable), Relevant (exam prep), Time-bound (30 days)." },
+      { q: "Short-term goals are typically:", options: ["Goals for the next 50 years","Goals achieved within a few days to one year","Goals never achieved","Goals without deadlines"], ans: 1, exp: "Short-term goals are achievable within a short timeframe — usually days, weeks, or up to one year." },
+      { q: "Long-term goals are typically:", options: ["Goals for tomorrow","Goals achieved in 1-5+ years requiring sustained effort","Goals achieved in a week","Minor daily tasks"], ans: 1, exp: "Long-term goals span 1-5+ years and require sustained planning, consistent effort, and milestone tracking." },
+      { q: "The 'M' in SMART goals means:", options: ["Meaningful","Manageable","Measurable","Motivating"], ans: 2, exp: "'M' stands for Measurable — you need concrete criteria to track progress and know when the goal is achieved." },
+      { q: "A 'Wish List' in goal setting refers to:", options: ["A shopping list","A list of desired outcomes and aspirations that haven't been turned into concrete goals yet","Only impossible dreams","A budget plan"], ans: 1, exp: "A wish list captures desires and aspirations — it's the starting point before refining them into structured SMART goals." },
+      { q: "Why are deadlines important in goal setting?", options: ["They are not important","They create accountability, urgency, and focus","They cause unnecessary stress always","They restrict creativity"], ans: 1, exp: "Deadlines create urgency, prevent procrastination, and provide a clear target — they're essential for effective goal achievement." },
+      { q: "The 'Blueprint for Success' in goal setting refers to:", options: ["An architectural drawing","A detailed action plan mapping out the steps to achieve your goals","A wish list without action","A vague idea of success"], ans: 1, exp: "Blueprint for success is a detailed, structured action plan — like a roadmap with specific steps, milestones, and timelines." },
+      { q: "Which question does 'Specific' in SMART address?", options: ["When will it be done?","How much?","What exactly needs to be accomplished?","Why is it important?"], ans: 2, exp: "Specific answers the 'What': What exactly do you want to accomplish? Who is involved? Where? The clearer the better." },
+      { q: "Lifetime goals differ from long-term goals in that:", options: ["They are the same thing","Lifetime goals define your ultimate purpose and legacy over your entire life","Lifetime goals are achieved in 5 years","Lifetime goals are impractical"], ans: 1, exp: "Lifetime goals represent your deepest purposes and legacy — the overarching direction of your entire life journey." },
+      { q: "Goal setting improves performance by:", options: ["Limiting creativity","Providing direction, focus, and a measurable standard to work toward","Creating stress always","Replacing skills"], ans: 1, exp: "Goals direct attention, mobilize effort, encourage persistence, and motivate strategy development — all improving performance." },
+      { q: "The 'R' in SMART stands for:", options: ["Realistic","Rewarding","Reliable","Relevant"], ans: 3, exp: "'R' stands for Relevant — the goal must matter to you and align with other relevant goals and your overall direction." },
+      { q: "Which of the following is NOT a SMART goal?", options: ["Score above 75% in next exam","Submit assignment by Friday","Do better somehow","Run 3km in under 20 minutes by March"], ans: 2, exp: "'Do better somehow' is neither specific, measurable, nor time-bound — it fails multiple SMART criteria." },
+      { q: "Breaking a large goal into smaller milestones helps by:", options: ["Making it more complicated","Making progress measurable and maintaining motivation","Delaying achievement","Removing accountability"], ans: 1, exp: "Milestones break overwhelming goals into manageable steps, making progress visible and maintaining motivation throughout." },
+      { q: "Which is an example of a LONG-TERM goal for a student?", options: ["Complete today's homework","Attend tomorrow's lecture","Become a software engineer within 3 years of graduation","Eat lunch"], ans: 2, exp: "Becoming a software engineer in 3 years is a long-term goal — it requires sustained effort, planning, and multiple milestones." },
+      { q: "Strategic goal setting primarily involves:", options: ["Setting random goals","Defining purposeful goals aligned with your vision and values with actionable plans","Only setting financial goals","Writing goals without action plans"], ans: 1, exp: "Strategic goal setting involves connecting goals to your larger vision, values, and creating actionable plans to achieve them." },
+      { q: "'Achievable' in SMART means:", options: ["Any dream is achievable regardless of resources","The goal is challenging but realistic given your skills and resources","Goals should require no effort","Goals should be effortless"], ans: 1, exp: "Achievable means the goal stretches you but is actually doable given your current skills, time, and available resources." },
+      { q: "Personal goal setting at the student level helps:", options: ["Only in exams","Provide academic direction, improve time management, and build self-discipline","Create more pressure","Limit extracurricular activities"], ans: 1, exp: "Personal goal setting gives students direction, improves time allocation, builds discipline, and correlates with academic success." },
+      { q: "Which habit most supports goal achievement?", options: ["Procrastination","Reviewing and adjusting goals regularly while maintaining consistent effort","Setting goals and never revisiting them","Changing goals daily"], ans: 1, exp: "Regular review and adjustment of goals while maintaining consistent action is the key habit for sustainable goal achievement." },
+      { q: "The 'T' in SMART stands for:", options: ["Tactical","Thoughtful","Time-bound","Tangible"], ans: 2, exp: "'T' stands for Time-bound — every goal needs a target date to create urgency and allow you to track progress." },
+      { q: "Goal visualization helps because:", options: ["It replaces actual work","Mental rehearsal activates the brain similarly to actual practice, boosting motivation","It is just daydreaming","It has no effect on performance"], ans: 1, exp: "Visualization or mental rehearsal activates neural pathways similarly to actual practice, boosting motivation and performance." },
+      { q: "What distinguishes a goal from a wish?", options: ["Goals are bigger","Goals have specific plans and commitment; wishes are vague desires without action","Wishes are more specific","There is no difference"], ans: 1, exp: "A goal has specificity, a plan, and commitment to action. A wish is a vague desire without a concrete plan or deadline." },
+      { q: "Which approach best helps achieve long-term goals?", options: ["Waiting for the perfect moment","Consistent daily action toward milestones, even small steps","Only working on weekends","Avoiding all distractions forever"], ans: 1, exp: "Consistent daily action — even small steps — compounds over time and is the most reliable path to long-term goal achievement." },
+      { q: "Setting goals related to your core values ensures:", options: ["Goals are always easy","Sustained intrinsic motivation because you're working toward what truly matters","Goals are always financial","Goals never change"], ans: 1, exp: "Values-aligned goals tap into intrinsic motivation — when you work toward what truly matters to you, commitment stays strong." },
+      { q: "A vision statement in goal setting serves as:", options: ["A daily task list","The overarching inspiring description of your desired future state","A shopping list","Only a corporate document"], ans: 1, exp: "A vision statement articulates your desired future — it's the inspiring North Star that guides your goal-setting process." },
+      { q: "Goal commitment is important because:", options: ["Without it, goals are just wishes — commitment drives consistent action","It's optional if goals are easy","Goals achieve themselves","Commitment slows you down"], ans: 0, exp: "Commitment transforms goals from wishes to reality — without genuine commitment, people abandon goals when they face obstacles." },
+      { q: "Which of these is a well-structured short-term goal?", options: ["I will be healthy","I want to exercise","I will walk 30 minutes every morning this week","I should eat better"], ans: 2, exp: "Walking 30 minutes every morning this week is specific, measurable, achievable, time-bound — a well-structured short-term goal." },
+      { q: "The concept of 'backward planning' in goals means:", options: ["Setting goals without thinking about the future","Starting from the desired end state and working backward to identify required steps","Avoiding planning","Only planning financially"], ans: 1, exp: "Backward planning starts with the end goal and works backward to identify each step needed, ensuring a complete action pathway." },
+      { q: "Which mindset is essential for achieving difficult goals?", options: ["Fixed mindset — you're born with fixed abilities","Growth mindset — abilities can be developed through effort","Pessimistic mindset","Avoidance mindset"], ans: 1, exp: "Growth mindset — the belief that abilities can be developed — is essential for persisting through the challenges of difficult goals." },
+      { q: "Goal setting without action planning is:", options: ["Highly effective","Sufficient for success","Incomplete — goals need concrete action steps to become achievements","Better than having plans"], ans: 2, exp: "Goals without action plans remain wishes. Effective goal setting requires breaking goals into specific, actionable steps with timelines." },
+    ]
+  },
+  {
+    id: 5, name: "Effective Time Management", icon: "⏰",
+    desc: "Value of time, prioritization, weekly planner, to-do list",
+    tag: "core", tagLabel: "📖 Core",
+    color: "#f43f5e",
+    questions: [
+      { q: "Time management is best defined as:", options: ["Working as many hours as possible","The process of planning and controlling how much time to spend on specific activities","Multitasking constantly","Delegating all work"], ans: 1, exp: "Time management is the process of planning and exercising conscious control over time to increase effectiveness and productivity." },
+      { q: "The Eisenhower Matrix categorizes tasks by:", options: ["Cost and time","Urgency and Importance","Size and difficulty","Team and individual"], ans: 1, exp: "The Eisenhower/Urgency-Importance Matrix categorizes tasks into 4 quadrants based on urgency and importance to prioritize effectively." },
+      { q: "According to the Eisenhower Matrix, what should you do with tasks that are IMPORTANT but NOT URGENT?", options: ["Delete them","Do them immediately","Schedule them for later","Delegate them"], ans: 2, exp: "Important but Not Urgent tasks (Quadrant 2) should be scheduled — these are high-value activities like planning, learning, and relationships." },
+      { q: "Parkinson's Law states that:", options: ["Work expands to fill the time available for its completion","People work best under no pressure","Time is always sufficient","Less time means less work"], ans: 0, exp: "Parkinson's Law: 'Work expands so as to fill the time available for its completion' — tasks take as long as the time allocated." },
+      { q: "A 'To-Do List' helps by:", options: ["Creating more work","Capturing tasks, organizing priorities, and ensuring nothing is forgotten","Replacing all planning","Only for complex projects"], ans: 1, exp: "To-Do lists externalize tasks from memory, allow prioritization, and provide satisfaction when completed — enhancing productivity." },
+      { q: "Which is the MOST important time management skill?", options: ["Working faster on all tasks","Prioritization — focusing on high-impact tasks first","Doing all tasks simultaneously","Avoiding breaks always"], ans: 1, exp: "Prioritization is the core time management skill — identifying which tasks have the highest impact and doing those first." },
+      { q: "The Pomodoro Technique involves:", options: ["Working 8 hours straight","Working in focused 25-minute intervals separated by short breaks","Only working at night","Random work sessions"], ans: 1, exp: "Pomodoro Technique: 25 minutes focused work + 5-minute break, repeated. After 4 cycles, take a longer 15-30 min break." },
+      { q: "Procrastination is primarily caused by:", options: ["Having too many skills","Fear of failure, perfectionism, overwhelming tasks, or lack of motivation","Being too organized","Having clear goals"], ans: 1, exp: "Procrastination stems from fear of failure, perfectionism, tasks feeling overwhelming, or low intrinsic motivation." },
+      { q: "A weekly planner helps in:", options: ["Only tracking appointments","Distributing tasks across the week, balancing workload, and ensuring consistent progress","Only work tasks","Replacing a to-do list completely"], ans: 1, exp: "A weekly planner distributes tasks across the week, prevents overload on specific days, and ensures consistent daily progress." },
+      { q: "What does 'prioritizing work' mean?", options: ["Doing the easiest tasks first always","Doing the most urgent tasks regardless of importance","Ranking tasks by importance and urgency, then tackling highest-priority tasks first","Doing tasks randomly"], ans: 2, exp: "Prioritizing means ranking tasks by impact and urgency, then deliberately focusing on the most important ones first." },
+      { q: "Time wasters in the workplace include:", options: ["Taking scheduled breaks","Unnecessary meetings, excessive socializing, and constant phone checking","Planning sessions","Skill development activities"], ans: 1, exp: "Common time wasters: unnecessary meetings, excessive socializing, constant phone/email checking, and doing low-priority tasks first." },
+      { q: "The 80/20 Principle (Pareto's Law) in time management states:", options: ["80% of effort produces 20% of results","20% of activities produce 80% of results","All tasks are equally important","Time is evenly distributed"], ans: 1, exp: "Pareto's Principle: 20% of your tasks produce 80% of your results — focus on that 20% for maximum productivity." },
+      { q: "Effective time management leads to:", options: ["More stress and burnout","Reduced productivity","Better work-life balance, less stress, and higher achievement","Longer working hours always"], ans: 2, exp: "Good time management reduces stress, improves work-life balance, prevents burnout, and leads to greater achievement." },
+      { q: "Which is a time management strategy for students?", options: ["Studying only the night before exams","Regular study schedule with breaks, weekly review, and early assignment start","Avoiding planning","Studying randomly"], ans: 1, exp: "Regular structured study, spaced repetition, weekly reviews, and early starts are evidence-based time management strategies." },
+      { q: "Delegation in time management means:", options: ["Doing everything yourself","Assigning appropriate tasks to others to free up time for high-priority work","Avoiding responsibility","Only for managers"], ans: 1, exp: "Delegation assigns tasks to others, freeing you to focus on work only you can do — it's a critical time management skill." },
+      { q: "What is the value of time in personal development?", options: ["Time has no value","Time is the most finite resource — how you use it determines your growth and success","Only money matters","Health is more important than time"], ans: 1, exp: "Time is uniquely finite — unlike money, lost time cannot be recovered. Wise use of time is fundamental to personal development." },
+      { q: "Which behavior indicates POOR time management?", options: ["Setting daily priorities","Working consistently toward deadlines","Always waiting until the last minute and missing deadlines","Taking structured breaks"], ans: 2, exp: "Last-minute working and missing deadlines are clear indicators of poor time management skills." },
+      { q: "The ABC Method of prioritization categorizes tasks as:", options: ["Active, Background, Completed","A = Must do, B = Should do, C = Nice to do","All equal priority","Advanced, Basic, Complex"], ans: 1, exp: "ABC Method: A tasks are critical (must do today), B tasks are important but less urgent, C tasks are low priority." },
+      { q: "Time blocking involves:", options: ["Avoiding all meetings","Dedicating specific time slots for specific tasks or types of work","Random work scheduling","Only using calendars for appointments"], ans: 1, exp: "Time blocking allocates dedicated calendar slots for specific tasks, preventing constant context-switching and protecting deep work." },
+      { q: "Which of these is a symptom of poor time management?", options: ["Meeting deadlines consistently","Constant rushing, stress, and feeling overwhelmed","Taking regular breaks","Planning your week in advance"], ans: 1, exp: "Constant rushing, chronic stress, and feeling overwhelmed are classic symptoms of poor time management." },
+      { q: "How does time management help in 'smart working'?", options: ["By working longer hours","By focusing effort on high-impact activities, reducing waste, and achieving more in less time","By eliminating all breaks","By doing all tasks yourself"], ans: 1, exp: "Smart working = not harder but smarter — time management focuses effort on what matters most, multiplying effectiveness." },
+      { q: "What is the first step in effective time management?", options: ["Jumping straight into tasks","Auditing how you currently spend your time to identify patterns and wastage","Working faster","Buying a planner"], ans: 1, exp: "A time audit — tracking how you currently spend time — is the essential first step to identify where time is wasted." },
+      { q: "Setting a specific time for checking emails helps by:", options: ["Reducing communication","Preventing constant interruption and allowing focused work blocks","Missing important emails","Creating more emails"], ans: 1, exp: "Batching email checking at set times prevents constant interruptions, allowing longer blocks of focused, productive work." },
+      { q: "Which of the following is NOT a time management tool?", options: ["Calendar apps","To-do lists","Pomodoro timers","Gossiping at the water cooler"], ans: 3, exp: "Gossiping is a time waster, not a time management tool. Calendars, to-do lists, and timers are time management tools." },
+      { q: "Single-tasking (focusing on one task at a time) is preferred over multitasking because:", options: ["Multitasking is always faster","Single-tasking produces higher quality work and reduces mental fatigue","Multitasking doubles productivity","Single-tasking is only for beginners"], ans: 1, exp: "Research shows single-tasking produces higher quality, fewer errors, and less mental fatigue than multitasking, which fragments attention." },
+      { q: "How can students diagnose their time management issues?", options: ["By working more hours","By tracking daily activities, identifying time drains, and comparing with goals","By studying alone","By avoiding social activities"], ans: 1, exp: "Diagnosing time management issues requires tracking daily activities, identifying patterns, and comparing actual time use to ideal priorities." },
+      { q: "Which is a characteristic of a person with excellent time management?", options: ["Always busy but never productive","Consistent, calm, meets deadlines, and has time for priorities","Never takes breaks","Works without any planning"], ans: 1, exp: "Excellent time managers are consistently productive, calm (not rushed), meet deadlines, and have time for what matters most." },
+      { q: "The concept of 'deep work' in time management refers to:", options: ["Physically working underground","Distraction-free, focused work on cognitively demanding tasks producing high-value output","Shallow surface-level tasks","Working for very long hours straight"], ans: 1, exp: "Deep work (Cal Newport) is distraction-free, intense focus on cognitively demanding tasks — it produces the most valuable output." },
+      { q: "Which strategy helps overcome procrastination?", options: ["Waiting for motivation","Breaking tasks into tiny first steps (2-minute rule) and starting immediately","Doing easier tasks first all the time","Avoiding the task until it's urgent"], ans: 1, exp: "The 2-minute rule (if it takes <2 min, do now) and breaking tasks into tiny first steps removes the overwhelming feeling that causes procrastination." },
+      { q: "Time management ultimately helps professionals achieve:", options: ["Stress and burnout","A feeling of control, accomplishment, and sustainable high performance","Working 16-hour days","Ignoring personal life"], ans: 1, exp: "Good time management creates a sense of control, consistent accomplishment, reduced stress, and sustainable high performance." },
+    ]
+  },
+  {
+    id: 6, name: "Interpersonal Skills & Teamwork", icon: "🤝",
+    desc: "Communication, teamwork, leadership, conflict resolution, EI",
+    tag: "new", tagLabel: "✨ Rising",
+    color: "#06b6d4",
+    questions: [
+      { q: "Interpersonal skills are primarily:", options: ["Technical programming skills","The abilities used to communicate and interact effectively with other people","Financial analysis skills","Only writing skills"], ans: 1, exp: "Interpersonal skills are the behaviors and communication strategies used to interact effectively with other people." },
+      { q: "Active listening involves:", options: ["Hearing words while thinking about your response","Fully concentrating, understanding, and responding thoughtfully to the speaker","Only nodding occasionally","Waiting for your turn to speak"], ans: 1, exp: "Active listening means full attention, understanding the complete message, noting non-verbal cues, and responding thoughtfully." },
+      { q: "Empathy in the workplace means:", options: ["Agreeing with everyone always","Understanding and sharing the feelings and perspectives of others","Feeling sorry for everyone","Emotional weakness"], ans: 1, exp: "Empathy is understanding others' feelings and perspectives — it builds trust, improves communication, and strengthens relationships." },
+      { q: "Which is a key component of Emotional Intelligence?", options: ["Technical skills","Self-awareness, self-regulation, motivation, empathy, and social skills","High IQ only","Memorization ability"], ans: 1, exp: "Daniel Goleman's EI has 5 components: Self-awareness, Self-regulation, Motivation, Empathy, and Social/Relationship skills." },
+      { q: "Non-verbal communication includes:", options: ["Emails and reports","Body language, facial expressions, gestures, posture, and eye contact","Only sign language","Verbal speeches"], ans: 1, exp: "Non-verbal communication includes body language, facial expressions, gestures, posture, eye contact, and tone of voice." },
+      { q: "Teamwork requires:", options: ["Everyone working independently","Shared goals, mutual respect, cooperation, and complementary contributions","Only similar skill sets","One person doing everything"], ans: 1, exp: "Effective teamwork requires shared goals, mutual trust, clear roles, respectful communication, and complementary contributions." },
+      { q: "Conflict resolution is best described as:", options: ["Avoiding all disagreements","Winning every argument","Finding mutually acceptable solutions to disputes respectfully","Letting conflicts resolve themselves"], ans: 2, exp: "Conflict resolution involves working through disagreements constructively to reach mutually acceptable solutions that preserve relationships." },
+      { q: "Assertive communication means:", options: ["Aggressive and domineering behavior","Clearly expressing your thoughts, feelings, and needs while respecting others","Passive agreement with everyone","Avoiding all confrontation"], ans: 1, exp: "Assertive communication expresses your views directly and respectfully — balancing honesty with respect for others' boundaries." },
+      { q: "The 'Gratitude' skill in interpersonal relations helps by:", options: ["Making you seem weak","Building positive relationships, increasing trust, and improving team morale","Only being useful in personal life","Being irrelevant at work"], ans: 1, exp: "Practicing gratitude in professional settings builds positive relationships, increases trust, boosts morale, and creates a supportive culture." },
+      { q: "Which communication style can damage professional relationships?", options: ["Assertive communication","Active listening","Aggressive or passive-aggressive communication","Empathetic responses"], ans: 2, exp: "Aggressive communication dismisses others' views; passive-aggressive communication creates resentment — both damage professional relationships." },
+      { q: "A leader DIFFERS from a manager primarily in that:", options: ["Leaders manage budgets; managers inspire people","Leaders inspire and influence people toward vision; managers focus on planning and controlling processes","Managers have more authority","There is no difference"], ans: 1, exp: "Leaders inspire vision and influence behavior; managers plan, organize, and control processes — leadership is about people, management is about processes." },
+      { q: "Emotional intelligence in the workplace helps:", options: ["Replace technical skills","Navigate social situations, manage stress, resolve conflicts, and build strong relationships","Only in personal life","Make everyone emotional"], ans: 1, exp: "High EI enables professionals to navigate complex social dynamics, handle stress effectively, resolve conflicts, and build productive relationships." },
+      { q: "Which of these is a barrier to effective communication?", options: ["Active listening","Clarity and conciseness","Making assumptions about the listener","Empathy"], ans: 2, exp: "Assumptions about what the listener knows or thinks is a major communication barrier, leading to misunderstanding and miscommunication." },
+      { q: "Teamwork is important personally because:", options: ["It removes individual accountability","It develops communication skills, empathy, flexibility, and the ability to contribute to something larger","It eliminates individual contribution","It only benefits organizations"], ans: 1, exp: "Teamwork develops key life skills — communication, empathy, flexibility, collaboration — that benefit every aspect of personal life." },
+      { q: "Verbal communication is different from non-verbal communication in that:", options: ["Verbal communication uses words and language; non-verbal uses body, gestures, and tone","Non-verbal is more important always","Verbal includes tone and gestures","They mean the same thing"], ans: 0, exp: "Verbal communication = words and language. Non-verbal = body language, facial expressions, gestures, posture, tone, eye contact." },
+      { q: "The ability to give constructive feedback requires:", options: ["Being harsh to motivate","Focusing on specific behaviors, offering solutions, and being kind and respectful","Only positive feedback","Criticizing personality"], ans: 1, exp: "Constructive feedback focuses on specific behaviors (not personality), offers solutions, and is delivered with respect and positive intent." },
+      { q: "Which interpersonal skill is MOST important for team leaders?", options: ["Technical expertise only","Effective communication — both speaking clearly and listening actively","Avoiding all conflicts","Working alone"], ans: 1, exp: "Communication is the most critical leadership skill — leaders must clearly convey vision, listen to team concerns, and facilitate dialogue." },
+      { q: "Social skills in emotional intelligence refer to:", options: ["Social media management","Managing relationships, communication, influence, and inspiring others","Technical social media skills","Only networking events"], ans: 1, exp: "Social skills (EI component) include managing relationships, effective communication, influence, conflict management, and inspiring teamwork." },
+      { q: "Educationally, teamwork develops:", options: ["Only academic content knowledge","Collaborative skills, peer learning, multiple perspectives, and real-world problem-solving","Competition among students","Isolation from peers"], ans: 1, exp: "Educational teamwork develops collaborative skills, deepens learning through peer teaching, exposes students to multiple perspectives, and simulates real-world work." },
+      { q: "Which behavior demonstrates good interpersonal skills at work?", options: ["Interrupting colleagues to correct them","Listening patiently, acknowledging others' contributions, and communicating respectfully","Taking credit for team achievements","Avoiding difficult conversations"], ans: 1, exp: "Patient listening, acknowledging others, and respectful communication are hallmarks of strong interpersonal skills at work." },
+      { q: "Self-regulation in emotional intelligence means:", options: ["Never showing emotions","Managing your impulses, emotions, and behavior appropriately in different situations","Suppressing all feelings always","Only controlling anger"], ans: 1, exp: "Self-regulation is the ability to manage disruptive emotions and impulses, think before acting, and adapt to changing circumstances." },
+      { q: "Which factor MOST affects interpersonal skill development?", options: ["Genetics alone","Practice, feedback, self-awareness, and exposure to diverse social situations","Technical education","Only personality type"], ans: 1, exp: "Interpersonal skills are developed through deliberate practice, feedback from others, growing self-awareness, and diverse social experiences." },
+      { q: "'Netorking' professionally means:", options: ["Only computer networking","Building and nurturing mutually beneficial relationships with people in your field","Only collecting business cards","Social media friend requests"], ans: 1, exp: "Professional networking is the intentional building of mutually beneficial relationships that provide career opportunities, knowledge, and support." },
+      { q: "Which is the BEST conflict resolution strategy for workplace disputes?", options: ["Avoidance — pretend it doesn't exist","Accommodation — always give in","Collaboration — find win-win solutions addressing all parties' core needs","Domination — force your view"], ans: 2, exp: "Collaboration seeks win-win solutions addressing everyone's core needs — it's the most effective conflict resolution approach for sustaining relationships." },
+      { q: "The necessity of teamwork at work is:", options: ["Optional for most roles","Complex goals exceed individual capability — teams leverage diverse skills, enable faster completion, and produce better results","Only for creative projects","Only for large companies"], ans: 1, exp: "Teamwork is essential because complex organizational goals require diverse skills and coordinated effort that no single individual possesses." },
+      { q: "Feedback in professional communication helps by:", options: ["Creating defensiveness only","Providing information to improve performance, strengthen skills, and align expectations","Being irrelevant if you're experienced","Only pointing out negatives"], ans: 1, exp: "Feedback — when well-delivered — is essential for professional growth, aligning performance, and building a culture of continuous improvement." },
+      { q: "Which is an example of a STRONG interpersonal skill?", options: ["Interrupting to prove a point","Remembering colleagues' names and showing genuine interest in their perspectives","Keeping to yourself always","Never expressing your views"], ans: 1, exp: "Remembering names, showing genuine interest, and engaging authentically with colleagues are signs of strong interpersonal skills." },
+      { q: "Assertiveness is different from aggression because:", options: ["They are the same","Assertiveness respects others' rights while expressing your own; aggression violates others' rights","Aggression is always more effective","Assertiveness means always saying yes"], ans: 1, exp: "Assertiveness = expressing your needs and rights while respecting others'. Aggression = imposing your needs at others' expense." },
+      { q: "The socially important function of gratitude in teams is:", options: ["Creating obligation","Reinforcing prosocial behavior, building trust, and strengthening team bonds","Being manipulative","Only useful for personal relationships"], ans: 1, exp: "Expressing gratitude reinforces positive team behaviors, deepens trust, and strengthens the social bonds that make teams resilient." },
+      { q: "Which is a key difference between passive and assertive communication?", options: ["Passive communicators get better results","Assertive communication clearly expresses needs with respect; passive communication suppresses needs out of fear","Passive communication is more professional","They produce the same outcomes"], ans: 1, exp: "Assertive communication expresses needs clearly and respectfully. Passive communication suppresses needs to avoid conflict — often at great personal cost." },
+    ]
+  }
+];
+
+// =================== STATE ===================
+const STORAGE_KEY = 'softskills_arena_v2';
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  return {
+    totalXP: 0,
+    bestStreak: 0,
+    totalAnswered: 0,
+    totalCorrect: 0,
+    units: UNITS.map((u, i) => ({
+      id: u.id,
+      unlocked: i === 0,
+      completed: false,
+      highScore: 0,
+      bestXP: 0,
+      questionsUnlocked: 10, // start with 10 questions unlocked
+      totalAttempts: 0
+    }))
+  };
+}
+
+function saveState(state) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+}
+
+let state = loadState();
+
+// =================== QUIZ STATE ===================
+let currentUnit = null;
+let questions = [];
+let currentIdx = 0;
+let sessionScore = 0;
+let sessionCorrect = 0;
+let sessionWrong = 0;
+let sessionXP = 0;
+let streak = 0;
+let answered = false;
+
+// =================== BADGES ===================
+const BADGES = [
+  { id: 'first_blood', icon: '🎯', title: 'First Blood', desc: 'Answer your first question', condition: s => s.totalAnswered >= 1 },
+  { id: 'hot_streak', icon: '🔥', title: 'On Fire', desc: 'Get a streak of 5 in a row', condition: s => s.bestStreak >= 5 },
+  { id: 'century', icon: '💯', title: 'Century', desc: 'Answer 100 questions total', condition: s => s.totalAnswered >= 100 },
+  { id: 'scholar', icon: '📚', title: 'Scholar', desc: 'Complete all 6 units', condition: s => s.units.every(u => u.completed) },
+  { id: 'xp_500', icon: '⚡', title: 'Energy Surge', desc: 'Earn 500 total XP', condition: s => s.totalXP >= 500 },
+  { id: 'perfectionist', icon: '✨', title: 'Perfectionist', desc: 'Score 100% on any unit', condition: s => s.units.some(u => u.highScore === 100) },
+  { id: 'unit_3', icon: '🏆', title: 'Triple Crown', desc: 'Unlock 3 units', condition: s => s.units.filter(u => u.unlocked).length >= 3 },
+  { id: 'xp_1000', icon: '🌟', title: 'Star Player', desc: 'Earn 1000 total XP', condition: s => s.totalXP >= 1000 },
+];
+
+function getEarnedBadges() {
+  return BADGES.filter(b => b.condition(state));
+}
+
+// =================== RENDER HOME ===================
+function renderHome() {
+  state = loadState();
+
+  // Stats
+  document.getElementById('total-xp').textContent = state.totalXP;
+  document.getElementById('best-streak').textContent = state.bestStreak;
+  document.getElementById('qs-answered').textContent = state.totalAnswered;
+  const acc = state.totalAnswered > 0 ? Math.round((state.totalCorrect / state.totalAnswered) * 100) : 0;
+  document.getElementById('accuracy-stat').textContent = acc + '%';
+
+  // Units
+  const grid = document.getElementById('units-grid');
+  grid.innerHTML = '';
+  UNITS.forEach((unit, i) => {
+    const uState = state.units[i];
+    const questionsAvailable = uState.questionsUnlocked;
+    const totalQs = unit.questions.length;
+    const pct = uState.completed ? 100 : Math.round((questionsAvailable / totalQs) * 100);
+    const isLocked = !uState.unlocked;
+
+    const card = document.createElement('div');
+    card.className = 'unit-card' + (isLocked ? ' locked' : '') + (uState.completed ? ' completed' : '');
+    card.style.setProperty('--unit-color', unit.color);
+
+    card.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.5rem">
+        <div class="unit-icon">${unit.icon}</div>
+        ${isLocked ? '<div class="lock-icon">🔒</div>' : `<span class="unit-tag tag-${unit.tag}">${unit.tagLabel}</span>`}
+      </div>
+      <div class="unit-num">Unit ${unit.id}</div>
+      <div class="unit-name">${unit.name}</div>
+      <div class="unit-desc">${unit.desc}</div>
+      <div class="unit-progress-wrap">
+        <div class="unit-progress-bar" style="width:${pct}%;background:linear-gradient(90deg,${unit.color},${unit.color}99)"></div>
+      </div>
+      <div class="unit-meta">
+        <span>${isLocked ? 'Complete previous unit to unlock' : `${questionsAvailable}/${totalQs} questions`}</span>
+        ${uState.highScore > 0 ? `<span class="unit-score-badge">Best: ${uState.highScore}%</span>` : (isLocked ? '' : '<span style="color:var(--muted);font-size:0.72rem">Not started</span>')}
+      </div>
+    `;
+
+    if (!isLocked) {
+      card.onclick = () => startUnit(i);
+    } else {
+      card.onclick = () => showToast('🔒 Complete the previous unit first!');
+    }
+    grid.appendChild(card);
+  });
+
+  // Badges
+  const badgeRow = document.getElementById('badges-row');
+  badgeRow.innerHTML = '';
+  const earned = getEarnedBadges().map(b => b.id);
+  BADGES.forEach(b => {
+    const isEarned = earned.includes(b.id);
+    const div = document.createElement('div');
+    div.className = 'badge-item' + (isEarned ? ' earned' : ' locked-badge');
+    div.innerHTML = `<span class="badge-icon">${b.icon}</span><span>${b.title}</span>`;
+    div.title = b.desc;
+    badgeRow.appendChild(div);
+  });
+}
+
+// =================== START UNIT ===================
+function startUnit(unitIdx) {
+  currentUnit = unitIdx;
+  const uState = state.units[unitIdx];
+  const unit = UNITS[unitIdx];
+
+  // Get available questions (shuffled subset)
+  const available = unit.questions.slice(0, uState.questionsUnlocked);
+  questions = shuffle([...available]).slice(0, Math.min(10, available.length));
+  currentIdx = 0;
+  sessionScore = 0;
+  sessionCorrect = 0;
+  sessionWrong = 0;
+  sessionXP = 0;
+  streak = 0;
+  answered = false;
+
+  showScreen('quiz');
+  renderQuestion();
+}
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+// =================== RENDER QUESTION ===================
+function renderQuestion() {
+  const q = questions[currentIdx];
+  answered = false;
+
+  // Progress
+  const pct = (currentIdx / questions.length) * 100;
+  document.getElementById('quiz-progress').style.width = pct + '%';
+
+  // Counter
+  document.getElementById('q-counter').textContent = `Unit ${UNITS[currentUnit].id} · Question ${currentIdx + 1} of ${questions.length}`;
+
+  // HUD
+  document.getElementById('streak-display').textContent = `🔥 ${streak}`;
+  document.getElementById('xp-display').textContent = `⚡ ${sessionXP} XP`;
+  document.getElementById('score-display').textContent = `✓ ${sessionCorrect}`;
+
+  // Question
+  document.getElementById('q-text').textContent = q.q;
+
+  // Options
+  const grid = document.getElementById('options-grid');
+  grid.innerHTML = '';
+  const letters = ['A', 'B', 'C', 'D'];
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="option-letter">${letters[i]}</span><span>${opt}</span>`;
+    btn.onclick = () => selectAnswer(i, btn);
+    grid.appendChild(btn);
+  });
+
+  // Hide feedback & next
+  const fb = document.getElementById('feedback-box');
+  fb.style.display = 'none';
+  document.getElementById('next-btn').style.display = 'none';
+
+  // Animate card
+  const card = document.getElementById('q-card');
+  card.style.animation = 'none';
+  card.offsetHeight;
+  card.style.animation = 'slideIn 0.35s ease';
+}
+
+// =================== ANSWER ===================
+function selectAnswer(chosenIdx, clickedBtn) {
+  if (answered) return;
+  answered = true;
+
+  const q = questions[currentIdx];
+  const isCorrect = chosenIdx === q.ans;
+  const allBtns = document.querySelectorAll('.option-btn');
+
+  allBtns.forEach(b => b.classList.add('disabled'));
+
+  if (isCorrect) {
+    clickedBtn.classList.add('correct');
+    streak++;
+    sessionCorrect++;
+    const xpGained = 10 + (streak >= 3 ? streak * 2 : 0);
+    sessionXP += xpGained;
+    showXpPop(`+${xpGained} XP`, clickedBtn);
+
+    document.getElementById('feedback-box').className = 'feedback-box correct-fb';
+    document.getElementById('feedback-title').textContent = streak >= 3 ? `🔥 ${streak}x Streak! Correct!` : '✅ Correct!';
+    document.getElementById('feedback-text').textContent = q.exp;
+
+    state.totalCorrect++;
+    if (streak > state.bestStreak) state.bestStreak = streak;
+  } else {
+    clickedBtn.classList.add('wrong');
+    allBtns[q.ans].classList.add('reveal-correct');
+    streak = 0;
+    sessionWrong++;
+
+    document.getElementById('feedback-box').className = 'feedback-box wrong-fb';
+    document.getElementById('feedback-title').textContent = '❌ Incorrect';
+    document.getElementById('feedback-text').textContent = `Correct answer: ${q.options[q.ans]}. ${q.exp}`;
+  }
+
+  document.getElementById('feedback-box').style.display = 'block';
+  document.getElementById('next-btn').style.display = 'block';
+
+  // Update HUD
+  document.getElementById('streak-display').textContent = `🔥 ${streak}`;
+  if (streak >= 3) document.getElementById('streak-display').classList.add('streak-fire');
+  document.getElementById('xp-display').textContent = `⚡ ${sessionXP} XP`;
+  document.getElementById('score-display').textContent = `✓ ${sessionCorrect}`;
+
+  state.totalAnswered++;
+  saveState(state);
+}
+
+function showXpPop(text, el) {
+  const rect = el.getBoundingClientRect();
+  const pop = document.createElement('div');
+  pop.className = 'xp-pop';
+  pop.textContent = text;
+  pop.style.left = (rect.left + rect.width/2 - 30) + 'px';
+  pop.style.top = (rect.top - 10) + 'px';
+  document.body.appendChild(pop);
+  setTimeout(() => pop.remove(), 1500);
+}
+
+// =================== NEXT QUESTION ===================
+function nextQuestion() {
+  currentIdx++;
+  document.getElementById('streak-display').classList.remove('streak-fire');
+
+  if (currentIdx >= questions.length) {
+    endUnit();
+  } else {
+    renderQuestion();
+  }
+}
+
+// =================== END UNIT ===================
+function endUnit() {
+  const uState = state.units[currentUnit];
+  const unit = UNITS[currentUnit];
+  const totalQs = questions.length;
+  const scorePct = Math.round((sessionCorrect / totalQs) * 100);
+
+  // Update state
+  state.totalXP += sessionXP;
+  uState.totalAttempts++;
+
+  if (scorePct > uState.highScore) uState.highScore = scorePct;
+  if (sessionXP > uState.bestXP) uState.bestXP = sessionXP;
+
+  // Unlock more questions
+  const totalAvailable = unit.questions.length;
+  if (scorePct >= 60 && uState.questionsUnlocked < totalAvailable) {
+    const toUnlock = Math.min(uState.questionsUnlocked + 10, totalAvailable);
+    uState.questionsUnlocked = toUnlock;
+  }
+
+  // Mark completed + unlock next unit
+  if (scorePct >= 60) {
+    if (uState.questionsUnlocked >= totalAvailable) {
+      uState.completed = true;
+    }
+    if (currentUnit + 1 < state.units.length && !state.units[currentUnit + 1].unlocked) {
+      state.units[currentUnit + 1].unlocked = true;
+    }
+  }
+
+  saveState(state);
+
+  // Show result
+  showScreen('result');
+
+  const emoji = scorePct >= 90 ? '🌟' : scorePct >= 70 ? '🎯' : scorePct >= 50 ? '📚' : '💪';
+  const title = scorePct >= 90 ? 'Outstanding!' : scorePct >= 70 ? 'Great Work!' : scorePct >= 50 ? 'Good Effort!' : 'Keep Practicing!';
+  const sub = scorePct >= 60
+    ? (uState.questionsUnlocked < totalAvailable ? `10 more questions unlocked! (${uState.questionsUnlocked}/${totalAvailable} total)` : '🏆 Unit mastered!')
+    : 'Score 60%+ to unlock more questions.';
+
+  document.getElementById('result-emoji').textContent = emoji;
+  document.getElementById('result-title').textContent = title;
+  document.getElementById('result-sub').textContent = sub;
+  document.getElementById('result-score-num').textContent = scorePct + '%';
+  document.getElementById('result-ring').style.setProperty('--pct', scorePct + '%');
+  document.getElementById('r-correct').textContent = sessionCorrect;
+  document.getElementById('r-wrong').textContent = sessionWrong;
+  document.getElementById('r-xp').textContent = '+' + sessionXP;
+
+  // Check new badges
+  const prevEarned = getEarnedBadges().map(b => b.id);
+  const newBadge = BADGES.find(b => !prevEarned.includes(b.id) && b.condition(state));
+  if (newBadge) {
+    const box = document.getElementById('earned-badge-box');
+    box.style.display = 'block';
+    document.getElementById('earned-badge-icon').textContent = newBadge.icon;
+    document.getElementById('earned-badge-title').textContent = '🏆 Badge Unlocked: ' + newBadge.title;
+    document.getElementById('earned-badge-desc').textContent = newBadge.desc;
+    if (scorePct >= 70) fireConfetti();
+  } else if (scorePct >= 70) {
+    document.getElementById('earned-badge-box').style.display = 'none';
+    fireConfetti();
+  } else {
+    document.getElementById('earned-badge-box').style.display = 'none';
+  }
+}
+
+// =================== CONFETTI ===================
+function fireConfetti() {
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const particles = Array.from({length: 120}, () => ({
+    x: Math.random() * canvas.width,
+    y: -10,
+    vx: (Math.random() - 0.5) * 6,
+    vy: Math.random() * 4 + 2,
+    r: Math.random() * 6 + 3,
+    color: ['#3b82f6','#06d6a0','#f59e0b','#f43f5e','#a855f7','#fff'][Math.floor(Math.random()*6)],
+    rotation: Math.random() * 360,
+    rotSpeed: (Math.random()-0.5) * 6
+  }));
+
+  let frame = 0;
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy; p.rotation += p.rotSpeed;
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rotation * Math.PI/180);
+      ctx.fillStyle = p.color; ctx.fillRect(-p.r, -p.r/2, p.r*2, p.r);
+      ctx.restore();
+    });
+    frame++;
+    if (frame < 120) requestAnimationFrame(draw);
+    else ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+  draw();
+}
+
+// =================== NAV ===================
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function goHome() {
+  renderHome();
+  showScreen('home');
+}
+
+function retryUnit() {
+  if (currentUnit !== null) startUnit(currentUnit);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// =================== INIT ===================
+renderHome();
+showScreen('home');
+</script>
+</body>
+</html>
